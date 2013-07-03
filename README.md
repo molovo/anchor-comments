@@ -92,3 +92,9 @@ Place this code in the `footer.php` of your theme.
 <small>If you have chosen a different directory, then reflect this in the include above.</small>
 
 <small>If you have already loaded jQuery within your theme then that line can be omitted.</small>
+
+##### Additional Info
+
+This plugin uses the existing comment functionality, so comments can be disabled/enabled per article, approved and marked as spam within the admin console, and set to be auto approved, just as with the standard comment system.
+
+The default styling for the plugin matches the default theme, and works best at desktop sizes (The comments will be present at mobile sizes on responsive sites, but may appear of screen). A responsive version is in the works.
