@@ -3,6 +3,8 @@ anchor-comments
 
 A plugin utilising the existing Anchor CMS comments functionality to provide inline comments within articles.
 
+NOTE:: *This plugin is still in development, so please test thoroughly and shout at me if it's broken so I can fix it :)*
+
 ### Setup
 
 ##### Place the plugin within your theme
