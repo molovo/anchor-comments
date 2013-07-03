@@ -81,10 +81,10 @@ Route::post('addinlinecomment/(:any)', function($slug) {
 
 ##### Launch the plugin
 
-Place this code in the `footer.php` of your theme.
+Place this code at the bottom of `article.php` within your theme.
 
 ```php
-<?php if (is_article() && comments_open()): ?>
+<?php if (comments_open()): ?>
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
     <?php theme_include('anchor-comments/anchor-comments'); ?>
 <?php endif ?>
