@@ -99,6 +99,6 @@ Place this code at the bottom of `article.php` within your theme.
 
 ##### Additional Info
 
-This plugin uses the existing comment functionality, so comments can be disabled/enabled per article, approved and marked as spam within the admin console, and set to be auto approved, just as with the standard comment system.
-
-The default styling for the plugin matches the default theme, and works best at desktop sizes (The comments will be present at mobile sizes on responsive sites, but may appear of screen). A responsive version is in the works.
+* This plugin uses the existing comment functionality, so comments can be disabled/enabled per article, approved and marked as spam within the admin console, and set to be auto approved, just as with the standard comment system.
+* The default styling for the plugin matches the default theme, and works best at desktop sizes (The comments will be present at mobile sizes on responsive sites, but may appear of screen). A responsive version is in the works.
+* If an additional paragraph is added after comments have been posted, all comments from that paragraph to the end of the article will appear one paragraph early (and earlier if more than one is added). There's no easy way around this without some serious data modification, but I'll find a way eventually.
