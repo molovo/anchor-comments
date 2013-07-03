@@ -4,7 +4,6 @@ jQuery(document).ready(function($) {
 		$(this).css({position: 'relative'}).prepend('<div class="anchor-comment" data-position="' + i + '"><span class="comment-count"></span><a href="' + i + '" class="anchor-comment-link">+</a><h3 class="commentlist">Be the first to comment</h3><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
 
 		$.getJSON(base + 'comments/' + slug + '/' + i, function(response) {
-			alert(JSON.stringify(response));
 			if (response[0]) {
 				$('.anchor-comment[data-position="' + i + '"]').addClass('has-comments');
 				$('.anchor-comment[data-position="' + i + '"] span.comment-count').html(response.length);
