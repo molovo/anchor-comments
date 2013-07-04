@@ -84,6 +84,7 @@ section.content {
 			}
 			.anchor-comment ul.commentlist li {
 				padding: 0 .75em .75em;
+				list-style: none;
 			}
 
 			.anchor-comment input, .anchor-comment textarea {
