@@ -1,6 +1,4 @@
 jQuery(document).ready(function($) {
-	$('.anchor-comment form.comment').hide();
-
 	$('section.content article p').each(function(i) {
 		$(this).css({position: 'relative'}).prepend('<a href="' + i + '" class="anchor-comment-link">+</a><div class="anchor-comment" data-position="' + i + '"><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
 
@@ -24,7 +22,7 @@ jQuery(document).ready(function($) {
 					items += '</li>';
 				});
 
-				items += '<li><p><a href="' + i + '" class="anchor-comment-add">Add a Comment</a></p></li></ul>';
+				items += '<li><p><a href="#' + i + '" class="anchor-comment-add" onclick="javascript:showCommentForm(' + i + ');">Add a Comment</a></p></li></ul>';
 
 				$('.anchor-comment[data-position="' + i + '"]').prepend(items);
 			}
@@ -44,43 +42,19 @@ jQuery(document).ready(function($) {
 			if (response == 'success') {
 				var count = parseInt($('.anchor-comment[data-position="' + data['pos'] + '"] .anchor-comment-link small').html());
 				if (count) {
-					$('.anchor-comment[data-position="' + data['pos'] + '"] ul.commentlist').append('<li><h4>' + data['name'] + '</h3><p>' + data['text'] + '</p></li>');
+					$('.anchor-comment[data-position="' + data['pos'] + '"] .commentlist').append('<li><h4>' + data['name'] + '</h3><p>' + data['text'] + '</p></li>');
 				} else {
 					count = 0;
-					$('.anchor-comment[data-position="' + data['pos'] + '"] .anchor-comment-link').after('<ul class="commentlist"><h3>Comments</h3>');
-					$('.anchor-comment[data-position="' + data['pos'] + '"] ul.commentlist').append('<li><h4>' + data['name'] + '</h3><p>' + data['text'] + '</p></li>');
+					$('.anchor-comment[data-position="' + data['pos'] + '"]').prepend('<ul class="commentlist"><h3>Comments</h3></ul>');
+					$('.anchor-comment[data-position="' + data['pos'] + '"] .commentlist').append('<li><h4>' + data['name'] + '</h4><p>' + data['text'] + '</p></li>');
 				}
-				$('.anchor-comment[data-position="' + data['pos'] + '"] span.comment-count').html(count + 1);
+				$('.anchor-comment-link[href="' + data['pos'] + '"]').html('<small>' + (count + 1) + '</small>').addClass('has-comments');
 				$('.anchor-comment[data-position="' + data['pos'] + '"] form.comment').fadeOut(300);
 				$('.anchor-comment[data-position="' + data['pos'] + '"] .commentlist').fadeIn(300);
-				setTimeout(function() {
-					$('.anchor-comment[data-position="' + data['pos'] + '"] .commentlist').fadeOut(300);
-					$('.anchor-comment[data-position="' + data['pos'] + '"]').removeClass('typing');
-				}, 2000);
 			}
 		});
 		return false;
 	})
-
-	/*$('.anchor-comment').on('mouseenter', function() {
-		var act = $(this).attr('data-position');
-		$('.anchor-comment[data-position="' + act + '"]').not('.typing').find('.commentlist').fadeIn(300);
-	}).on('mouseleave', function() {
-		var act = $(this).attr('data-position');
-		$('.anchor-comment[data-position="' + act + '"]').not('.typing').find('form.comment').fadeOut(300);
-		$('.anchor-comment[data-position="' + act + '"]').find('.commentlist').fadeOut(300);
-	});*/
-
-	/*$('.anchor-comment-link').on('click', function() {
-		var act = $(this).attr('href');
-		$('.anchor-comment').removeClass('typing').find('.commentlist, form.comment').fadeOut(300);
-		$('.anchor-comment[data-position="' + act + '"]').addClass('typing');
-		$('.anchor-comment[data-position="' + act + '"] .commentlist').fadeOut(300);
-		setTimeout(function() {
-			$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300).find('input:first').focus();
-		}, 300);
-		return false;
-	});*/
 
 	$('.anchor-comment-link').on('click', function() {
 		var act = $(this).attr('href');
@@ -112,12 +86,10 @@ jQuery(document).ready(function($) {
 		}
 		return false;
 	});
-
-	$('.anchor-comment-add').on('click', function() {
-		var act = $(this).attr('href');
-
-		$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300);
-		$('.anchor-comment[data-position="' + act + '"] .commentlist').fadeOut(300);
-		return false;
-	});
 });
+
+function showCommentForm(act) {
+	$('.anchor-comment[data-position="' + act + '"] .commentlist').fadeOut(300);
+	$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300);
+	return false;
+}

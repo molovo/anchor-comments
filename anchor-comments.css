@@ -33,7 +33,7 @@ section.content {
 			padding: 0 .6em .5em;
 			color: white;
 			font-weight: 900;
-			font-size: 1em;
+			font-size: .75em;
 			font-family: "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 			text-decoration: none;
 			position: absolute;
@@ -68,8 +68,8 @@ section.content {
 		.anchor-comment form.comment {
 			font-size: .75em;
 			top: 0;
-			right: 0;
-			padding: 0 3em 0 0;
+			right: 3em;
+			padding: 0 .75em 0 0;
 			position: absolute;
 			width: 18em;
 			color: #6e7886;
