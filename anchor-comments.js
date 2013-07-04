@@ -1,13 +1,12 @@
 jQuery(document).ready(function($) {
 	$('.anchor-comment form.comment').hide();
+
 	$('section.content article p').each(function(i) {
-		$(this).css({position: 'relative'}).prepend('<div class="anchor-comment" data-position="' + i + '"><span class="comment-count"></span><a href="' + i + '" class="anchor-comment-link">+</a><h3 class="commentlist">Be the first to comment</h3><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
+		$(this).css({position: 'relative'}).prepend('<a href="' + i + '" class="anchor-comment-link">+</a><div class="anchor-comment" data-position="' + i + '"><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
 
 		$.getJSON(base + 'comments/' + slug + '/' + i, function(response) {
 			if (response[0]) {
-				$('.anchor-comment[data-position="' + i + '"]').addClass('has-comments');
-				$('.anchor-comment[data-position="' + i + '"] span.comment-count').html(response.length);
-				$('.anchor-comment[data-position="' + i + '"] h3.commentlist').remove();
+				$('.anchor-comment-link[href="' + i + '"]').addClass('has-comments').html('<small>' + response.length + '</small>');
 				var items = '<ul class="commentlist">' + '<h3>Comments</h3>';
 
 				$.each(response, function(row, data) {
@@ -25,9 +24,9 @@ jQuery(document).ready(function($) {
 					items += '</li>';
 				});
 
-				items += '</ul>';
+				items += '<li><p><a href="' + i + '" class="anchor-comment-add">Add a Comment</a></p></li></ul>';
 
-				$('.anchor-comment[data-position="' + i + '"] .anchor-comment-link').after(items);
+				$('.anchor-comment[data-position="' + i + '"]').prepend(items);
 			}
 		});
 	});
@@ -43,12 +42,11 @@ jQuery(document).ready(function($) {
 
 		$.post(action, data, function(response) {
 			if (response == 'success') {
-				var count = parseInt($('.anchor-comment[data-position="' + data['pos'] + '"] span.comment-count').html());
+				var count = parseInt($('.anchor-comment[data-position="' + data['pos'] + '"] .anchor-comment-link small').html());
 				if (count) {
 					$('.anchor-comment[data-position="' + data['pos'] + '"] ul.commentlist').append('<li><h4>' + data['name'] + '</h3><p>' + data['text'] + '</p></li>');
 				} else {
 					count = 0;
-					$('.anchor-comment[data-position="' + data['pos'] + '"] h3.commentlist').remove();
 					$('.anchor-comment[data-position="' + data['pos'] + '"] .anchor-comment-link').after('<ul class="commentlist"><h3>Comments</h3>');
 					$('.anchor-comment[data-position="' + data['pos'] + '"] ul.commentlist').append('<li><h4>' + data['name'] + '</h3><p>' + data['text'] + '</p></li>');
 				}
@@ -64,16 +62,16 @@ jQuery(document).ready(function($) {
 		return false;
 	})
 
-	$('.anchor-comment').on('mouseenter', function() {
+	/*$('.anchor-comment').on('mouseenter', function() {
 		var act = $(this).attr('data-position');
 		$('.anchor-comment[data-position="' + act + '"]').not('.typing').find('.commentlist').fadeIn(300);
 	}).on('mouseleave', function() {
 		var act = $(this).attr('data-position');
 		$('.anchor-comment[data-position="' + act + '"]').not('.typing').find('form.comment').fadeOut(300);
 		$('.anchor-comment[data-position="' + act + '"]').find('.commentlist').fadeOut(300);
-	});
+	});*/
 
-	$('.anchor-comment-link').on('click', function() {
+	/*$('.anchor-comment-link').on('click', function() {
 		var act = $(this).attr('href');
 		$('.anchor-comment').removeClass('typing').find('.commentlist, form.comment').fadeOut(300);
 		$('.anchor-comment[data-position="' + act + '"]').addClass('typing');
@@ -81,6 +79,45 @@ jQuery(document).ready(function($) {
 		setTimeout(function() {
 			$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300).find('input:first').focus();
 		}, 300);
+		return false;
+	});*/
+
+	$('.anchor-comment-link').on('click', function() {
+		var act = $(this).attr('href');
+		var close = false;
+
+		$('.anchor-comment[data-position="' + act + '"]').find('.commentlist, form.comment').each(function() {
+			if ($(this).is(':visible')) {
+				$(this).fadeOut(300);
+				$('.anchor-comment-link[href="' + act + '"]').removeClass('active');
+				$('section.content').removeClass('anchor-comments-visible');
+				close = true;
+			}
+		});
+
+		if (!close) {
+			$('.anchor-comment').find('.commentlist, form.comment').fadeOut(300);
+			$('section.content').removeClass('anchor-comments-visible');
+			$('.anchor-comment-link').removeClass('active');
+
+			if ($(this).hasClass('has-comments')) {
+				$(this).toggleClass('active');
+				$('.anchor-comment[data-position="' + act + '"] .commentlist').fadeToggle(300);
+				$('section.content').toggleClass('anchor-comments-visible');
+			} else {
+				$(this).toggleClass('active');
+				$('.anchor-comment[data-position="' + act + '"] form.comment').fadeToggle(300);
+				$('section.content').toggleClass('anchor-comments-visible');
+			}
+		}
+		return false;
+	});
+
+	$('.anchor-comment-add').on('click', function() {
+		var act = $(this).attr('href');
+
+		$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300);
+		$('.anchor-comment[data-position="' + act + '"] .commentlist').fadeOut(300);
 		return false;
 	});
 });
