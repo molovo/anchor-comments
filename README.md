@@ -14,7 +14,7 @@ Place the files within a subfolder in the base directory of your theme. `e.g. /t
 
 
 ##### Setup the Comment URLs
-Add the following to /anchor/routes/site.php anywhere between lines 19 and 241.
+Add the following to `/anchor/routes/site.php` anywhere between lines `19` and `241`.
 
 ```php
 Route::get('comments/(:any)/(:num)', function($slug, $pos) {
