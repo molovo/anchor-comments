@@ -91,7 +91,7 @@ Place this code at the bottom of `article.php` within your theme.
 <?php if (comments_open()): ?>
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
     <?php theme_include('anchor-comments/anchor-comments'); ?>
-<?php endif ?>
+<?php endif; ?>
 ```
 <small>If you have chosen a different directory, then reflect this in the include above.</small>
 
