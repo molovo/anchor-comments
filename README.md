@@ -5,7 +5,7 @@ A plugin utilising the existing Anchor CMS comments functionality to provide inl
 
 Check out a rough demo [ here](http://molovo.co.uk/blog/comment-testing)
 
-NOTE:: *This plugin is still in development, so please test thoroughly and shout at me if it's broken so I can fix it :)*
+NOTE:: *This plugin is **very much still in development**, so please test thoroughly and shout at me if it's broken so I can fix it :)*
 
 ### Setup
 
