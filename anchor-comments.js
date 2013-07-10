@@ -1,5 +1,6 @@
 jQuery(document).ready(function($) {
 	$('section.content article > p').each(function(i) {
+		i = i+1;
 		$(this).css({position: 'relative'}).prepend('<a href="' + i + '" class="anchor-comment-link">+</a><div class="anchor-comment" data-position="' + i + '"><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><blockquote class="anchor-comment-quote"></blockquote><input type="hidden" name="quote" /><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
 
 		$.getJSON(base + 'comments/' + slug + '/' + i, function(response) {
