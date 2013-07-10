@@ -24,9 +24,6 @@ section.content {
 	     -o-transition: all .25s ease-in-out;
 	        transition: all .25s ease-in-out;
 }
-	.anchor-comment:hover, .anchor-comment.typing {
-		opacity: 1 !important;
-	}
 		.anchor-comment-link, .anchor-comment-link:visited {
 			background: url('comment.png') center no-repeat;
 			background-size: 1.5em;
@@ -41,15 +38,26 @@ section.content {
 			left: -2.5em;
 			opacity: 0;
 			z-index: 999;
+			-webkit-transition: opacity .25s ease-in-out;
+			   -moz-transition: opacity .25s ease-in-out;
+			    -ms-transition: opacity .25s ease-in-out;
+			     -o-transition: opacity .25s ease-in-out;
+			        transition: opacity .25s ease-in-out;
 		}
 		p:hover .anchor-comment-link,
 		.anchor-comment-link.has-comments {
 			opacity: .2;
 		}
+		@media (max-width: 768px) {
+			.anchor-comment-link {
+				opacity: .2 !important;
+			}
+		}
 		.anchor-comment-link:hover,
 		.anchor-comment-link.active {
 			opacity: 1 !important;
 			color: white;
+			text-decoration: none;
 		}
 		.anchor-comment-link small {
 			padding-top: .2em;
