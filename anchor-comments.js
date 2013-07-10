@@ -145,5 +145,6 @@ $('section.content').mouseup(function(e){
 		});
 	} else if (st == '') {
 		$('body').data('st', '');
+		$('#commentQuoteTooltip').fadeOut(300).offset({left: 0, top: 0});
 	}
 });
