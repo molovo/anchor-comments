@@ -19,7 +19,8 @@ Add the following to `/anchor/routes/site.php` anywhere between lines `19` and `
 ```php
 Route::get('comments/(:any)/(:num)', function($slug, $pos) {
 	$table = Base::table('comments');
-	$column = 'pos';
+	$column1 = 'pos';
+	$column2 = 'quote';
 
 	$sql = 'SHOW COLUMNS FROM `' . $table . '`';
 	list($result, $statement) = DB::ask($sql);
@@ -31,10 +32,16 @@ Route::get('comments/(:any)/(:num)', function($slug, $pos) {
 		$columns[] = $row->Field;
 	}
 
-	$has_column = in_array($column, $columns);
+	$has_column1 = in_array($column1, $columns);
+	$has_column2 = in_array($column2, $columns);
 
-	if(!$has_column) {
+	if(!$has_column1) {
 		$sql = "ALTER TABLE `" . $table . "` ADD `pos` INT NULL";
+		DB::ask($sql);
+	}
+
+	if(!$has_column2) {
+		$sql = "ALTER TABLE `" . $table . "` ADD `quote` VARCHAR(2500) NULL AFTER `email`";
 		DB::ask($sql);
 	}
 
@@ -46,7 +53,7 @@ Route::get('comments/(:any)/(:num)', function($slug, $pos) {
 });
 
 Route::post('addinlinecomment/(:any)', function($slug) {
-	$input = Input::get(array('name', 'email', 'text', 'pos'));
+	$input = Input::get(array('name', 'email', 'text', 'pos', 'quote'));
 
 	$validator = new Validator($input);
 
