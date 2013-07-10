@@ -124,3 +124,40 @@ section.content {
 				.anchor-comment button:hover {
 					background: #3c6eb7;
 				}
+
+			.anchor-comment .anchor-comment-quote, .anchor-comment .anchor-comment-quote-display {
+				background: transparent;
+				border: 0;
+				height: auto;
+				overflow: hidden;
+				font-size: 1.5em;
+				opacity: .5;
+				font-style: italic;
+				margin-top: 1em;
+			}
+
+			#commentQuoteTooltip {
+				background: #4e82ce;
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: white;
+				display: none;
+				padding: .25em .75em;
+				font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+				border-radius: 5px;
+			}
+
+			#commentQuoteTooltip:after {
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				margin-left: -.5em;
+				width: 0;
+				height: 0;
+				border-top: .5em solid #4e82ce;
+				border-left: .5em solid transparent;
+				border-right: .5em solid transparent;
+				display: inline-block;
+				content: ' ';
+			}

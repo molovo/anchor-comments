@@ -5,3 +5,5 @@
 	var base = '<?php echo base_url(); ?>'
 </script>
 <script src="<?php echo theme_url('anchor-comments/anchor-comments.js'); ?>"></script>
+
+<a href="#" id="commentQuoteTooltip">Quote</a>

@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
-	$('section.content article p').each(function(i) {
-		$(this).css({position: 'relative'}).prepend('<a href="' + i + '" class="anchor-comment-link">+</a><div class="anchor-comment" data-position="' + i + '"><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
+	$('section.content article > p').each(function(i) {
+		$(this).css({position: 'relative'}).prepend('<a href="' + i + '" class="anchor-comment-link">+</a><div class="anchor-comment" data-position="' + i + '"><form class="comment" action="' + base + 'addinlinecomment/' + slug + '" method="post"><h3>Leave a Comment</h3><label for="name">Name</label><input type="text" name="name"><label for="email">Email</label><input type="email" name="email"><blockquote class="anchor-comment-quote"></blockquote><input type="hidden" name="quote" /><label for="text">Comment</label><textarea name="text"></textarea><input type="hidden" name="pos" value="' + i + '" /><button type="submit" value="submit">Post Comment</button></form></div>');
 
 		$.getJSON(base + 'comments/' + slug + '/' + i, function(response) {
 			if (response[0]) {
@@ -14,6 +14,9 @@ jQuery(document).ready(function($) {
 
 						if (key == 'name') {
 							items += '<h4>' + val + '</h4>';
+						}
+						if (key == 'quote' && val) {
+							items += '<blockquote class="anchor-comment-quote-display">&ldquo;' + val + '&rdquo;</blockquote>';
 						}
 						if (key == 'text') {
 							items += '<p>' + val + '</p>';
@@ -93,3 +96,53 @@ function showCommentForm(act) {
 	$('.anchor-comment[data-position="' + act + '"] form.comment').fadeIn(300);
 	return false;
 }
+
+if(!window.anchorComment){
+	anchorComment = {};
+}
+
+anchorComment.Selector = {};
+anchorComment.Selector.getSelected = function(){
+  var t = '';
+  if(window.getSelection){
+    t = window.getSelection();
+  }else if(document.getSelection){
+    t = document.getSelection();
+  }else if(document.selection){
+    t = document.selection.createRange().innerHTML;
+  }
+  return t;
+}
+
+$('section.content').mouseup(function(e){
+	var tooltip = $('#commentQuoteTooltip');
+    mousePos = {left: e.pageX - tooltip.width(), top: e.pageY - (tooltip.height() * 2) + $(window).scrollTop()};
+	var st = anchorComment.Selector.getSelected();
+	var stp = $('section.content').find(':not(:has(:contains("' + st + '"))):contains("' + st + '")');
+
+	if(st!='' && stp.html().match(st) && (!$('body').data('st') || $('body').data('st') != st)) {
+		$('body').data('st', st);
+		var pos = stp.find('.anchor-comment').attr('data-position');
+		tooltip.offset(mousePos).fadeIn(300);
+
+		$('#commentQuoteTooltip').click(function() {
+			$('.anchor-comment-quote').each(function() {
+				$(this).empty();
+			});
+			$('.anchor-comment').find('.commentlist, form.comment').fadeOut(300);
+			$('section.content').removeClass('anchor-comments-visible');
+			$('.anchor-comment-link').removeClass('active');
+
+			$('.anchor-comment-link[href="' + pos + '"]').toggleClass('active');
+			$('.anchor-comment[data-position="' + pos + '"] form.comment').fadeToggle(300);
+			$('.anchor-comment[data-position="' + pos + '"] input[name="quote"]').val(st);
+			$('.anchor-comment[data-position="' + pos + '"] .anchor-comment-quote').html($('.anchor-comment[data-position="' + pos + '"] input[name="quote"]').val());
+			$('section.content').toggleClass('anchor-comments-visible');
+
+			$(this).fadeOut(300).offset({left: 0, top: 0});
+			return false;
+		});
+	} else if (st == '') {
+		$('body').data('st', '');
+	}
+});
